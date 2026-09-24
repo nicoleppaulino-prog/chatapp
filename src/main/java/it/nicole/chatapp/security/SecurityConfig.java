@@ -9,13 +9,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         http
                 // niente pagina di login di Spring: il login lo facciamo noi con il JWT
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -28,6 +29,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 );
+
+        // il buttafuori controlla il braccialetto prima dei controlli standard di Spring
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
