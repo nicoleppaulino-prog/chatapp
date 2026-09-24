@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // il regolamento: chi può entrare dove
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/error").permitAll()
+                        .requestMatchers("/auth/**", "/error", "/ws/**", "/test-chat.html").permitAll()
                         .anyRequest().authenticated()
                 );
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Prova chat in diretta</title>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<h1>Prova chat in diretta</h1>
+
+<label>Id chat: <input id="chatId" value="1"></label>
+<button onclick="collegati()">Collegati</button>
+
+<p id="stato">Non collegata</p>
+<ul id="messaggi"></ul>
+
+<script>
+    function collegati() {
+        const chatId = document.getElementById("chatId").value;
+        const client = new StompJs.Client({ brokerURL: "ws://localhost:8080/ws" });
+
+        client.onConnect = function () {
+            document.getElementById("stato").textContent = "Collegata alla chat " + chatId;
+
+            // mi sintonizzo sul canale della chat
+            client.subscribe("/topic/chat/" + chatId, function (arrivo) {
+                const messaggio = JSON.parse(arrivo.body);
+                const riga = document.createElement("li");
+                riga.textContent = messaggio.mittente.username + ": " + messaggio.testo;
+                document.getElementById("messaggi").appendChild(riga);
+            });
+        };
+
+        client.activate();
+    }
+</script>
+</body>
+</html>
