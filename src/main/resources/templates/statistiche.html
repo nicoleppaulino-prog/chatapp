@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Le tue statistiche</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+<div style="background-color: white; max-width: 500px; margin: auto; padding: 20px; border-radius: 8px;">
+
+    <h1 style="color: #4b3f9e;">Ciao <span th:text="${username}">utente</span>!</h1>
+
+    <p>Ecco le tue statistiche sulla Chatapp:</p>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">Messaggi inviati</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;" th:text="${inviati}">0</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">Messaggi ricevuti</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;" th:text="${ricevuti}">0</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;">Chat aperte</td>
+            <td style="padding: 8px;" th:text="${chatAperte}">0</td>
+        </tr>
+    </table>
+
+    <p>A presto!</p>
+</div>
+
+</body>
+</html>

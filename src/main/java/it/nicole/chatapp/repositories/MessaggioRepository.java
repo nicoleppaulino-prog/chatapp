@@ -8,4 +8,10 @@ import java.util.List;
 public interface MessaggioRepository extends JpaRepository<Messaggio, Long> {
 
     List<Messaggio> findByChatIdOrderByDataInvioAsc(Long chatId);
+
+    // messaggi inviati: il mittente sono io
+    long countByMittenteId(Long mittenteId);
+
+    // messaggi ricevuti: nelle mie chat, ma scritti da qualcun altro
+    long countByChatPartecipantiIdAndMittenteIdNot(Long mioId, Long stessoMioId);
 }

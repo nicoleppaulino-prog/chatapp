@@ -8,4 +8,7 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     List<Chat> findByPartecipantiId(Long idUtente);
+
+    // quante chat ho aperte
+    long countByPartecipantiId(Long idUtente);
 }
