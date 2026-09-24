@@ -4,6 +4,7 @@ import it.nicole.chatapp.entities.Chat;
 import it.nicole.chatapp.entities.Messaggio;
 import it.nicole.chatapp.entities.Utente;
 import it.nicole.chatapp.services.ChatService;
+import it.nicole.chatapp.services.IaService;
 import it.nicole.chatapp.services.MessaggioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,12 +20,18 @@ public class ChatController {
     public record NuovoMessaggio(String testo) {
     }
 
+    // la risposta con il suggerimento dell'IA
+    public record Suggerimento(String testo) {
+    }
+
     private final ChatService chatService;
     private final MessaggioService messaggioService;
+    private final IaService iaService;
 
-    public ChatController(ChatService chatService, MessaggioService messaggioService) {
+    public ChatController(ChatService chatService, MessaggioService messaggioService, IaService iaService) {
         this.chatService = chatService;
         this.messaggioService = messaggioService;
+        this.iaService = iaService;
     }
 
     @PostMapping("/{username}")
@@ -49,5 +56,11 @@ public class ChatController {
                            @PathVariable Long chatId,
                            @RequestBody NuovoMessaggio corpo) {
         return messaggioService.invia(chatId, io, corpo.testo());
+    }
+
+    @GetMapping("/{chatId}/suggerimento")
+    public Suggerimento suggerimento(@AuthenticationPrincipal Utente io, @PathVariable Long chatId) {
+        String testo = iaService.suggerisciMessaggio(chatId, io);
+        return new Suggerimento(testo);
     }
 }
